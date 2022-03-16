@@ -1,4 +1,4 @@
-<div class="background-header"></div>
+<!-- <div class="background-header"></div>
 <div class="background-body"></div>
 <div class="chatContainer">
   <app-sidebar
@@ -23,6 +23,42 @@
       </p>
     </div>
     <app-chat [conversation]="conversation" *ngIf="conversation"></app-chat>
+  </div>
+</div> -->
+<div class="background-header"></div>
+<div class="container">
+  <div class="chatContainer">
+    <div class="col-md-4" style="overflow: auto">
+      <app-sidebar
+        (conversationClicked)="onConversationSelected($event)"
+      ></app-sidebar>
+    </div>
+    <div
+      [ngClass]="
+        conversation !== undefined ? 'col-md-8 myClass' : ' myChatClass col-md-8'
+      "
+    >
+      <div class="chat">
+        <div class="chatPlaceholder" *ngIf="!conversation">
+          <h2>Keep your Internet connected</h2>
+          <img width="400" src="../assets/images/chatIcon.jpeg" />
+          <p>
+            Real time Chat connects you to sync messages. To reduce data<br />
+            usage, connect to your phone to Wi-Fi.
+          </p>
+          <div class="seperator"></div>
+
+          <p>
+            Real time Chat code available.<a
+              href="https://github.com/MuaazFarooqKhan"
+              style="color: #41599a; text-decoration: none"
+              >Get it here</a
+            >
+          </p>
+        </div>
+        <app-chat [conversation]="conversation" *ngIf="conversation"></app-chat>
+      </div>
+    </div>
   </div>
 </div>
 <router-outlet></router-outlet>

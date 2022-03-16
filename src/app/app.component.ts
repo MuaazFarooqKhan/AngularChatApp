@@ -8,6 +8,7 @@ import { Component } from '@angular/core';
 export class AppComponent {
   conversation: any;
 
+  constructor(){}
   onConversationSelected(conversation: object) {
     this.conversation = conversation;
   }

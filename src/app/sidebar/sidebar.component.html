@@ -1,53 +1,50 @@
 <div class="sidebar">
-    <div class="row1">
-      <div class="sidebarHeader">
-        <div class="avatarContainer">
-          <img src="../../assets/images/noPic.svg" />
-        </div>
-        <div class="actionsContainer">
-          <img src="../../assets/images/chatIcon.svg" />
-          <img src="../../assets/images/moreVertIcon.svg" />
-        </div>
+  <div class="row1">
+    <div class="sidebarHeader">
+      <div class="avatarContainer">
+        <img src="../../assets/images/noPic.svg" />
       </div>
-      <div class="searchBox">
-        <img width="19" src="../../assets/images/searchIcon.png" />
-        <input
-          [(ngModel)]="searchText"
-          type="text"
-          placeholder="Search or start the new chat"
-        />
+      <div class="actionsContainer">
+        <img src="../../assets/images/chatIcon.svg" />
+        <img src="../../assets/images/moreVertIcon.svg" />
       </div>
     </div>
-  
-    <div class="sidebarContent">
-      <div
-        class="conversation"
-        *ngFor="
-          let conversation of !searchText ? conversations : filteredConversations
-        "
-        (click)="conversationClicked.emit(conversation)"
+    <div class="selectUser">
+      <label>Choose User</label>
+      <br>
+      <select [ngModel]="selectedDeviceObj" (ngModelChange)="onChangeObj($event)">
+        <option [ngValue]="i" *ngFor="let i of userObjects">{{i.label}}</option>
+      </select>
+    </div>
+  </div>
 
-      >
-        <div class="picture">
-          <img src="../../assets/images/noPic.svg" />
+  <div class="sidebarContent">
+    <div
+      class="conversation"
+      *ngFor="
+        let conversation of channelObjects
+      "
+      (click)="conversationClicked.emit(conversation)"
+    >
+      <div class="picture">
+        <img src="../../assets/images/noPic.svg" />
+      </div>
+      <div class="content">
+        <div class="conversationHeader">
+          <div class="name">{{ conversation.label }}</div>
         </div>
-        <div class="content">
-          <div class="conversationHeader">
-            <div class="name">{{ conversation.name }}</div>
-            <div class="time">{{ conversation.time }}</div>
-          </div>
-          <div class="message">
-            <img
-              *ngIf="!conversation.latestMessageRead"
-              src="../../assets/images/doubleTick.svg"
-            />
-            <img
-              *ngIf="conversation.latestMessageRead"
-              src="../../assets/images/doubleTickBlue.svg"
-            />
-            {{ conversation.latestMessage }}
-          </div>
-        </div>
+        <!-- <div class="message">
+          <img
+            *ngIf="!conversation.latestMessageRead"
+            src="../../assets/images/doubleTick.svg"
+          />
+          <img
+            *ngIf="conversation.latestMessageRead"
+            src="../../assets/images/doubleTickBlue.svg"
+          />
+          {{ conversation.latestMessage }}
+        </div> -->
       </div>
     </div>
   </div>
+</div>
