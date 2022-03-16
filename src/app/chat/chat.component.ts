@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 
 @Component({
   selector: 'app-chat',
@@ -6,10 +6,29 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./chat.component.scss']
 })
 export class ChatComponent implements OnInit {
-
-  constructor() { }
+  @Input() conversation: any;
+  @Output() onSubmit: EventEmitter<any> = new EventEmitter();
+  emojiPickerVisible: any;
+  message = '';
+  constructor() {}
 
   ngOnInit(): void {
   }
 
+  submitMessage(event: any) {
+    let value = event.target.value.trim();
+    this.message = '';
+    if (value.length < 1) return false;
+    this.conversation.latestMessage = value;
+    return this.conversation.messages.unshift({
+      id: 1,
+      body: value,
+      time: '10:21',
+      me: true,
+    });
+  }
+
+  emojiClicked(event: any) {
+    this.message += event.emoji.native;
+  }
 }

@@ -1,9 +1,11 @@
 <div class="background-header"></div>
 <div class="background-body"></div>
 <div class="chatContainer">
-  <app-sidebar></app-sidebar>
+  <app-sidebar
+    (conversationClicked)="onConversationSelected($event)"
+  ></app-sidebar>
   <div class="chat">
-    <div class="chatPlaceholder">
+    <div class="chatPlaceholder" *ngIf="!conversation">
       <h2>Keep your Internet connected</h2>
       <img width="400" src="../assets/images/chatIcon.jpeg" />
       <p>
@@ -20,6 +22,7 @@
         >
       </p>
     </div>
+    <app-chat [conversation]="conversation" *ngIf="conversation"></app-chat>
   </div>
 </div>
 <router-outlet></router-outlet>
