@@ -23,8 +23,10 @@
       <div
         class="conversation"
         *ngFor="
-          let conversation of !searchText ? conversations : null
+          let conversation of !searchText ? conversations : filteredConversations
         "
+        (click)="conversationClicked.emit(conversation)"
+
       >
         <div class="picture">
           <img src="../../assets/images/noPic.svg" />

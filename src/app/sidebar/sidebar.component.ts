@@ -6,6 +6,8 @@ import { Component, EventEmitter, OnInit, Output } from '@angular/core';
   styleUrls: ['./sidebar.component.scss']
 })
 export class SidebarComponent implements OnInit {
+  @Output() conversationClicked: EventEmitter<any> = new EventEmitter();
+
   searchText: string = '';
   conversations = [
     {
@@ -26,7 +28,7 @@ export class SidebarComponent implements OnInit {
       latestMessage: 'wow',
       latestMessageRead: true,
       messages: [
-        { id: 1, body: 'Hello world', time: '8:21', me: true },
+        { id: 1, body: 'Hello#41599a', time: '8:21', me: true },
         { id: 2, body: 'How are you?', time: '8:21', me: false },
         { id: 3, body: 'I am fine thanks', time: '8:21', me: true },
         { id: 4, body: 'Glad to hear that', time: '8:21', me: false },
@@ -178,7 +180,20 @@ export class SidebarComponent implements OnInit {
     },
   ];
 
-  constructor() {}
+  constructor() { }
 
-  ngOnInit(): void {}
+  ngOnInit(): void { }
+  get filteredConversations() {
+    return this.conversations.filter((conversation) => {
+      return (
+        conversation.name
+          .toLowerCase()
+          .includes(this.searchText.toLowerCase()) ||
+        conversation.latestMessage
+          .toLowerCase()
+          .includes(this.searchText.toLowerCase())
+      );
+    });
+  }
+
 }
