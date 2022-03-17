@@ -35,7 +35,9 @@
     </div>
     <div
       [ngClass]="
-        conversation !== undefined ? 'col-md-8 myClass' : ' myChatClass col-md-8'
+        conversation !== undefined
+          ? 'col-md-8 myClass'
+          : ' myChatClass col-md-8'
       "
     >
       <div class="chat">
@@ -56,7 +58,25 @@
             >
           </p>
         </div>
-        <app-chat [conversation]="conversation" *ngIf="conversation"></app-chat>
+        <div *ngIf="conversation" style="display: contents;">
+          <div class="header">
+            <div class="avatarSection">
+              <div class="picture">
+                <img src="../../assets/images/noPic.svg" style="margin-top: 13px; float: left;"/>
+              </div>
+              <div class="nameSection"> 
+                {{ conversation.channel.label }}
+              </div>
+            </div>
+            <div class="actionButtons">
+              <img src="../../assets/images/attached.svg" />
+              <img src="../../assets/images/moreVertIcon.svg" />
+            </div>
+          </div>
+          <app-chat
+            [conversation]="conversation"
+          ></app-chat>
+        </div>
       </div>
     </div>
   </div>

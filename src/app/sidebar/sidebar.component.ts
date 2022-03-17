@@ -9,6 +9,16 @@ export class SidebarComponent implements OnInit {
   @Output() conversationClicked: EventEmitter<any> = new EventEmitter();
 
   searchText: string = '';
+  sendData = {
+    channel: {
+      label: '',
+      value: ''
+    },
+    user: {
+      label: '',
+      value: ''
+    }
+  }
   userObjects = [
     { value: 1, label: 'Joyse' },
     { value: 2, label: 'Sam' },
@@ -19,13 +29,26 @@ export class SidebarComponent implements OnInit {
     { value: 2, label: 'Technology Channel' },
     { value: 3, label: 'LGTM Channel' },
   ];
-  selectedDeviceObj = Array;
 
-  constructor() {}
+  constructor() { }
 
-  ngOnInit(): void {}
+  ngOnInit(): void { }
+  sendChannel(channelValue: any) {
+    debugger
+    this.sendData.channel.label = channelValue.label
+    this.sendData.channel.value = channelValue.value
+    if (channelValue.check !== true) {
+      this.conversationClicked.emit(this.sendData)
+    }
+    else{
+      alert("Please select User")
+    }
+  }
 
-  onChangeObj(newValue: any) {
-    console.log(newValue);
+  onChangeObj(userValue: any) {
+    debugger
+    this.sendData.user.label = userValue.label
+    this.sendData.user.value = userValue.value
+    console.log(this.sendData)
   }
 }

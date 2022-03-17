@@ -12,19 +12,20 @@
     <div class="selectUser">
       <label>Choose User</label>
       <br>
-      <select [ngModel]="selectedDeviceObj" (ngModelChange)="onChangeObj($event)">
+      <select [ngModel]="sendData.user" (ngModelChange)="onChangeObj($event)">
         <option [ngValue]="i" *ngFor="let i of userObjects">{{i.label}}</option>
       </select>
     </div>
   </div>
 
   <div class="sidebarContent">
+    <ng-container>
     <div
       class="conversation"
       *ngFor="
         let conversation of channelObjects
       "
-      (click)="conversationClicked.emit(conversation)"
+      (click)="this.sendData.user.value === '' ? sendChannel({check : true}) : sendChannel(conversation)"
     >
       <div class="picture">
         <img src="../../assets/images/noPic.svg" />
@@ -33,18 +34,8 @@
         <div class="conversationHeader">
           <div class="name">{{ conversation.label }}</div>
         </div>
-        <!-- <div class="message">
-          <img
-            *ngIf="!conversation.latestMessageRead"
-            src="../../assets/images/doubleTick.svg"
-          />
-          <img
-            *ngIf="conversation.latestMessageRead"
-            src="../../assets/images/doubleTickBlue.svg"
-          />
-          {{ conversation.latestMessage }}
-        </div> -->
       </div>
     </div>
+  </ng-container>
   </div>
 </div>
