@@ -16,16 +16,19 @@ export class ChatComponent implements OnInit {
   }
 
   submitMessage(event: any) {
+    debugger
+    console.log(this.conversation)
     let value = event.target.value.trim();
-    this.message = '';
-    if (value.length < 1) return false;
-    this.conversation.latestMessage = value;
-    return this.conversation.messages.unshift({
-      id: 1,
-      body: value,
-      time: '10:21',
-      me: true,
-    });
+    // this.message = '';
+    this.conversation.message = value
+    // if (value.length < 1) return false;
+    // this.conversation.latestMessage = value;
+    // return this.conversation.messages.unshift({
+    //   id: 1,
+    //   body: value,
+    //   time: '10:21',
+    //   me: true,
+    // });
   }
 
   emojiClicked(event: any) {

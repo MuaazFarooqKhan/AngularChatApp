@@ -17,7 +17,8 @@ export class SidebarComponent implements OnInit {
     user: {
       label: '',
       value: ''
-    }
+    },
+    message : ''
   }
   userObjects = [
     { value: 1, label: 'Joyse' },
