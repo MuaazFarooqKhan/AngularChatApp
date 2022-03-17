@@ -18,7 +18,24 @@ export class SidebarComponent implements OnInit {
       label: '',
       value: ''
     },
-    message : ''
+    messages: [
+      {
+        id: 1, body: 'Glad to hear that', time: '8:21', me: false, channelId: 1,
+        userId: 2
+      },
+      {
+        id: 2, body: 'Glad hear that', time: '8:21', me: false, channelId: 2,
+        userId: 1
+      },
+      {
+        id: 3, body: 'Glad hear that', time: '8:21', me: false, channelId: 2,
+        userId: 1
+      },
+      {
+        id: 4, body: 'Glad to hear that', time: '8:21', me: false, channelId: 1,
+        userId: 2
+      },
+    ],
   }
   userObjects = [
     { value: 1, label: 'Joyse' },
@@ -35,19 +52,17 @@ export class SidebarComponent implements OnInit {
 
   ngOnInit(): void { }
   sendChannel(channelValue: any) {
-    debugger
     this.sendData.channel.label = channelValue.label
     this.sendData.channel.value = channelValue.value
     if (channelValue.check !== true) {
       this.conversationClicked.emit(this.sendData)
     }
-    else{
+    else {
       alert("Please select User")
     }
   }
 
   onChangeObj(userValue: any) {
-    debugger
     this.sendData.user.label = userValue.label
     this.sendData.user.value = userValue.value
     console.log(this.sendData)

@@ -2,12 +2,17 @@
   <div class="body">
     <div
       class="message"
-      [ngClass]="{ me: message.me }"
+      [ngClass]="{ me: message.userId === conversation.user.value }"
       *ngFor="let message of conversation.messages"
     >
-      <div class="messageContent">
-        {{ message.body }}
-        <div class="time">{{ message.time }}</div>
+      <div
+        *ngIf="
+          message.channelId === conversation.channel.value 
+        "
+      >
+        <div class="messageContent">
+          {{ message.body }}
+        </div>
       </div>
     </div>
   </div>
