@@ -26,7 +26,8 @@ export class ChatComponent implements OnInit {
       body: value,
       time: '10:21',
       channelId : this.conversation.channel.value,
-      userId : this.conversation.user.value
+      userId : this.conversation.user.value,
+      userName : this.conversation.user.label
     });
   }
 

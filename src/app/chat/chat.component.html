@@ -6,13 +6,13 @@
       *ngFor="let message of conversation.messages"
     >
       <div
-        *ngIf="
-          message.channelId === conversation.channel.value 
-        "
+        *ngIf="message.channelId === conversation.channel.value"
+        [ngClass]="{ me: message.userId === conversation.user.value }"
       >
         <div class="messageContent">
           {{ message.body }}
         </div>
+        {{ message.userName }}
       </div>
     </div>
   </div>

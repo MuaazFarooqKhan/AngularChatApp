@@ -20,21 +20,9 @@ export class SidebarComponent implements OnInit {
     },
     messages: [
       {
-        id: 1, body: 'Glad to hear that', time: '8:21', me: false, channelId: 1,
+        id: 0, body: '', time: '', me: false, channelId: 1,
         userId: 2
-      },
-      {
-        id: 2, body: 'Glad hear that', time: '8:21', me: false, channelId: 2,
-        userId: 1
-      },
-      {
-        id: 3, body: 'Glad hear that', time: '8:21', me: false, channelId: 2,
-        userId: 1
-      },
-      {
-        id: 4, body: 'Glad to hear that', time: '8:21', me: false, channelId: 1,
-        userId: 2
-      },
+      }
     ],
   }
   userObjects = [
@@ -48,7 +36,14 @@ export class SidebarComponent implements OnInit {
     { value: 3, label: 'LGTM Channel' },
   ];
 
-  constructor() { }
+  constructor() {
+    this.sendData.messages =[
+      {
+        id: 0, body: '', time: '', me: false, channelId: 1,
+        userId: 2
+      }
+    ]
+  }
 
   ngOnInit(): void { }
   sendChannel(channelValue: any) {
