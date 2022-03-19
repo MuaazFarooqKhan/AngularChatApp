@@ -5,8 +5,8 @@ import { BrowserAnimationsModule } from "@angular/platform-browser/animations";
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
-import { SidebarComponent } from './sidebar/sidebar.component';
-import { ChatComponent } from './chat/chat.component';
+import { SidebarComponent } from './components/sidebar/sidebar.component';
+import { ChatComponent } from './components/chat/chat.component';
 import { PickerModule } from '@ctrl/ngx-emoji-mart';
 import { ApolloModule, APOLLO_OPTIONS } from 'apollo-angular';
 import { HttpLink } from 'apollo-angular/http';

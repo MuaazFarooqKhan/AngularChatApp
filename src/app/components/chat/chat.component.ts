@@ -16,7 +16,9 @@ export class ChatComponent implements OnInit {
   postMessages$?: Observable<FetchResult<PostMessageMutation>>;
   @Output() onSubmit: EventEmitter<any> = new EventEmitter();
   emojiPickerVisible: any;
-  sendData: any
+  sendData: any = {
+    fetchLatestMessages: []
+  }
   message = '';
   constructor(private fetchMessagesQL: FetchLatestMessagesGQL,
     private postMessagesQL: PostMessageGQL,
@@ -26,8 +28,9 @@ export class ChatComponent implements OnInit {
 
   ngOnInit(): void {
     this.fetchMessages$ = this.fetchMessagesQL.fetch({ channelId: this.conversation.channel.value })
-    this.fetchMessages$ && this.fetchMessages$.subscribe((res) => {
-      this.sendData = res && res.data
+    this.fetchMessages$ && this.fetchMessages$.subscribe((res: any) => {
+      debugger
+      this.sendData = JSON.parse(JSON.stringify(res.data))
       if (this.sendData) {
       }
     }, (err) => {
@@ -53,22 +56,18 @@ export class ChatComponent implements OnInit {
     debugger
     let value = event.target.value.trim();
     if (value.length < 1) return false;
-    console.log(this.conversation)
     this.postMessages$ = this.postMessagesQL.mutate({ text: value, userId: this.conversation.user.value, channelId: this.conversation.channel.value })
-    this.postMessages$ && this.postMessages$.subscribe((res) => {
+    this.postMessages$ && this.postMessages$.subscribe((res: any) => {
+      this.sendData.fetchLatestMessages.unshift(
+        {
+          ...res.data.postMessage
+        }
+      )
+      this.message = ''
+    }, ((error)=>{
       debugger
-      this.sendData.fetchLatestMessages.push(res && res.data && [res.data.postMessage])
-      console.log(res.data?.postMessage)
-    })
-    return this.sendData.fetchLatestMessages
-    // return this.conversation.messages.unshift({
-    //   id: this.conversation.messages.length + 1,
-    //   body: value,
-    //   time: '10:21',
-    //   channelId: this.conversation.channel.value,
-    //   userId: this.conversation.user.value,
-    //   userName: this.conversation.user.label
-    // });
+    }))
+    return this.sendData
   }
 
   fetchMoreMessages(check: boolean) {
