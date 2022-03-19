@@ -3,5 +3,23 @@
 @import "~bootstrap/dist/css/bootstrap.css";
 @import "~bootstrap-icons/font/bootstrap-icons.css";
 
+
 html, body { height: 100%; }
 body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+
+.toast-close-button {
+     color: black !important;
+}
+.toast-error {
+    background-image: none !important;
+}
+.toast-container {
+    max-width: 400px !important;
+    min-width: 400px !important;
+}
+.toast-center-center {
+    left: 60% !important;
+}
+span{
+    color: white;
+}

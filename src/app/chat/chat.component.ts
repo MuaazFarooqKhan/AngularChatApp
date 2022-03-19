@@ -2,6 +2,7 @@ import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { FetchResult } from '@apollo/client/core';
 import { Observable } from 'rxjs';
 import { FetchLatestMessagesGQL, FetchLatestMessagesQuery, FetchMoreMessagesGQL, FetchMoreMessagesQuery, PostMessageGQL, PostMessageMutation } from 'src/generated/graphql';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-chat',
@@ -19,13 +20,33 @@ export class ChatComponent implements OnInit {
   message = '';
   constructor(private fetchMessagesQL: FetchLatestMessagesGQL,
     private postMessagesQL: PostMessageGQL,
-    private fetchMoreMessagesQL: FetchMoreMessagesGQL,) { }
+    private fetchMoreMessagesQL: FetchMoreMessagesGQL,
+    private toastr: ToastrService,
+  ) { }
 
   ngOnInit(): void {
     this.fetchMessages$ = this.fetchMessagesQL.fetch({ channelId: this.conversation.channel.value })
     this.fetchMessages$ && this.fetchMessages$.subscribe((res) => {
       this.sendData = res && res.data
+      if (this.sendData) {
+      }
+    }, (err) => {
+      this.showNotificationUpdate('hello', 'hey')
+
     })
+  }
+  showNotificationUpdate(msg: string, news: string) {
+    this.toastr.error(
+      msg,
+      news,
+      {
+        timeOut: 5000,
+        closeButton: true,
+        enableHtml: true,
+        toastClass: "alert alert-error alert-with-icon",
+        positionClass: "toast-center-center"
+      }
+    );
   }
 
   submitMessage(event: any) {
