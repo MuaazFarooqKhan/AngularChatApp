@@ -1,0 +1,8 @@
+query fetchLatestMessages($channelId: String!){
+  fetchLatestMessages(channelId: $channelId){
+    messageId
+    text
+    datetime
+    userId
+  }
+}

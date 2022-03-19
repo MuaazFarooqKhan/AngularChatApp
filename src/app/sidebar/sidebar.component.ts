@@ -26,14 +26,14 @@ export class SidebarComponent implements OnInit {
     ],
   }
   userObjects = [
-    { value: 1, label: 'Joyse' },
-    { value: 2, label: 'Sam' },
-    { value: 3, label: 'Russell' },
+    { value: "Joyse", label: 'Joyse' },
+    { value: "Sam", label: 'Sam' },
+    { value: "Russell", label: 'Russell' },
   ];
   channelObjects = [
-    { value: 1, label: 'General Channel' },
-    { value: 2, label: 'Technology Channel' },
-    { value: 3, label: 'LGTM Channel' },
+    { value: "1", label: 'General Channel' },
+    { value: "2", label: 'Technology Channel' },
+    { value: "3", label: 'LGTM Channel' },
   ];
 
   constructor() {

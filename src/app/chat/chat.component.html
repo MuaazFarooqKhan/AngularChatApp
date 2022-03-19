@@ -3,16 +3,16 @@
     <div
       class="message"
       [ngClass]="{ me: message.userId === conversation.user.value }"
-      *ngFor="let message of conversation.messages"
+      *ngFor="let message of sendData.fetchLatestMessages"
     >
-      <div
-        *ngIf="message.channelId === conversation.channel.value"
-        [ngClass]="{ me: message.userId === conversation.user.value }"
-      >
-        <div class="messageContent">
-          {{ message.body }}
+      <div [ngClass]="{ me: message.userId === conversation.user.value }">
+        <div class="messageContent" style="word-wrap: break-word; max-width: 548px">
+          {{ message.text }}
+          <div>
+            {{ message.datetime | date: "hh:mm" }}
+          </div>
         </div>
-        {{ message.userName }}
+        {{ message.userId }}
       </div>
     </div>
   </div>
