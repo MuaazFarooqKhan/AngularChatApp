@@ -1,4 +1,12 @@
 <div class="container">
+  <button
+    *ngIf="sendData.fetchLatestMessages.length >= 9"
+    style="max-width: 90px; margin-top: 10px"
+  >
+    Click <i class="fa fa-arrow-up">
+
+    </i>
+  </button>
   <div class="body">
     <div
       class="message"
@@ -6,7 +14,10 @@
       *ngFor="let message of sendData.fetchLatestMessages"
     >
       <div [ngClass]="{ me: message.userId === conversation.user.value }">
-        <div class="messageContent" style="word-wrap: break-word; max-width: 548px">
+        <div
+          class="messageContent"
+          style="word-wrap: break-word; max-width: 548px"
+        >
           {{ message.text }}
           <div>
             {{ message.datetime | date: "hh:mm" }}
@@ -16,6 +27,12 @@
       </div>
     </div>
   </div>
+  <button
+    *ngIf="sendData.fetchLatestMessages.length >= 9"
+    style="max-width: 90px; margin-bottom: 10px"
+  >
+    Click me
+  </button>
   <div class="footer">
     <div class="smileyIcon">
       <img

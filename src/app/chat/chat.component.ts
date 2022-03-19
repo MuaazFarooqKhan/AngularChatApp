@@ -1,7 +1,7 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { FetchResult } from '@apollo/client/core';
 import { Observable } from 'rxjs';
-import { FetchLatestMessagesGQL, FetchLatestMessagesQuery } from 'src/generated/graphql';
+import { FetchLatestMessagesGQL, FetchLatestMessagesQuery, PostMessageGQL, PostMessageMutation } from 'src/generated/graphql';
 
 @Component({
   selector: 'app-chat',
@@ -11,11 +11,13 @@ import { FetchLatestMessagesGQL, FetchLatestMessagesQuery } from 'src/generated/
 export class ChatComponent implements OnInit {
   @Input() conversation: any;
   fetchMessages$?: Observable<FetchResult<FetchLatestMessagesQuery>>;
+  postMessages$?: Observable<FetchResult<PostMessageMutation>>;
   @Output() onSubmit: EventEmitter<any> = new EventEmitter();
   emojiPickerVisible: any;
-  sendData : any
+  sendData: any
   message = '';
-  constructor(private fetchMessagesQL: FetchLatestMessagesGQL) { }
+  constructor(private fetchMessagesQL: FetchLatestMessagesGQL,
+    private postMessagesQL: PostMessageGQL,) { }
 
   ngOnInit(): void {
     console.log(this.conversation.messages)
@@ -29,19 +31,25 @@ export class ChatComponent implements OnInit {
   }
 
   submitMessage(event: any) {
+    debugger
     let value = event.target.value.trim();
-    this.message = '';
     if (value.length < 1) return false;
     console.log(this.conversation)
-    debugger
-    return this.conversation.messages.unshift({
-      id: this.conversation.messages.length + 1,
-      body: value,
-      time: '10:21',
-      channelId: this.conversation.channel.value,
-      userId: this.conversation.user.value,
-      userName: this.conversation.user.label
-    });
+    this.postMessages$ = this.postMessagesQL.mutate({ text: value, userId: this.conversation.user.value, channelId: this.conversation.channel.value })
+    this.postMessages$ && this.postMessages$.subscribe((res) => {
+      debugger
+      this.sendData.fetchLatestMessages.push(res && res.data && [res.data.postMessage])
+      console.log(res.data?.postMessage)
+    })
+    return this.sendData.fetchLatestMessages
+    // return this.conversation.messages.unshift({
+    //   id: this.conversation.messages.length + 1,
+    //   body: value,
+    //   time: '10:21',
+    //   channelId: this.conversation.channel.value,
+    //   userId: this.conversation.user.value,
+    //   userName: this.conversation.user.label
+    // });
   }
 
   emojiClicked(event: any) {

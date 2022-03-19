@@ -1,0 +1,8 @@
+mutation postMessage($text: String!, $userId: String!, $channelId: String!) {
+  postMessage(text: $text, channelId: $channelId, userId: $userId) {
+    messageId
+    text
+    datetime
+    userId
+  }
+}

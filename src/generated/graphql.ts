@@ -175,6 +175,15 @@ export type FetchLatestMessagesQueryVariables = Exact<{
 
 export type FetchLatestMessagesQuery = { __typename?: 'Queries', fetchLatestMessages?: Array<{ __typename?: 'Message', messageId: string, text: string, datetime: any, userId: string }> | null };
 
+export type PostMessageMutationVariables = Exact<{
+  text: Scalars['String'];
+  userId: Scalars['String'];
+  channelId: Scalars['String'];
+}>;
+
+
+export type PostMessageMutation = { __typename?: 'Mutations', postMessage?: { __typename?: 'Message', messageId: string, text: string, datetime: any, userId: string } | null };
+
 export const FetchLatestMessagesDocument = gql`
     query fetchLatestMessages($channelId: String!) {
   fetchLatestMessages(channelId: $channelId) {
@@ -191,6 +200,27 @@ export const FetchLatestMessagesDocument = gql`
   })
   export class FetchLatestMessagesGQL extends Apollo.Query<FetchLatestMessagesQuery, FetchLatestMessagesQueryVariables> {
     override document = FetchLatestMessagesDocument;
+    
+    constructor(apollo: Apollo.Apollo) {
+      super(apollo);
+    }
+  }
+export const PostMessageDocument = gql`
+    mutation postMessage($text: String!, $userId: String!, $channelId: String!) {
+  postMessage(text: $text, channelId: $channelId, userId: $userId) {
+    messageId
+    text
+    datetime
+    userId
+  }
+}
+    `;
+
+  @Injectable({
+    providedIn: 'root'
+  })
+  export class PostMessageGQL extends Apollo.Mutation<PostMessageMutation, PostMessageMutationVariables> {
+    override document = PostMessageDocument;
     
     constructor(apollo: Apollo.Apollo) {
       super(apollo);
