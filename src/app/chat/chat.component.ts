@@ -1,7 +1,7 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { FetchResult } from '@apollo/client/core';
 import { Observable } from 'rxjs';
-import { FetchLatestMessagesGQL, FetchLatestMessagesQuery, PostMessageGQL, PostMessageMutation } from 'src/generated/graphql';
+import { FetchLatestMessagesGQL, FetchLatestMessagesQuery, FetchMoreMessagesGQL, FetchMoreMessagesQuery, PostMessageGQL, PostMessageMutation } from 'src/generated/graphql';
 
 @Component({
   selector: 'app-chat',
@@ -11,22 +11,20 @@ import { FetchLatestMessagesGQL, FetchLatestMessagesQuery, PostMessageGQL, PostM
 export class ChatComponent implements OnInit {
   @Input() conversation: any;
   fetchMessages$?: Observable<FetchResult<FetchLatestMessagesQuery>>;
+  fetchMoreMessages$?: Observable<FetchResult<FetchMoreMessagesQuery>>;
   postMessages$?: Observable<FetchResult<PostMessageMutation>>;
   @Output() onSubmit: EventEmitter<any> = new EventEmitter();
   emojiPickerVisible: any;
   sendData: any
   message = '';
   constructor(private fetchMessagesQL: FetchLatestMessagesGQL,
-    private postMessagesQL: PostMessageGQL,) { }
+    private postMessagesQL: PostMessageGQL,
+    private fetchMoreMessagesQL: FetchMoreMessagesGQL,) { }
 
   ngOnInit(): void {
-    console.log(this.conversation.messages)
-    debugger
     this.fetchMessages$ = this.fetchMessagesQL.fetch({ channelId: this.conversation.channel.value })
     this.fetchMessages$ && this.fetchMessages$.subscribe((res) => {
-      debugger
       this.sendData = res && res.data
-      console.log(res.data?.fetchLatestMessages && res.data?.fetchLatestMessages[0])
     })
   }
 
@@ -52,6 +50,29 @@ export class ChatComponent implements OnInit {
     // });
   }
 
+  fetchMoreMessages(check: boolean) {
+    console.log(this.sendData.fetchLatestMessages.length)
+    // console.log(this.sendData.fetchLatestMessages[9].messageId)
+    console.log(this.sendData.fetchLatestMessages[0].messageId)
+
+    debugger
+    if (check === true) {
+      this.fetchMoreMessages$ = this.fetchMoreMessagesQL.fetch({ channelId: this.conversation.channel.value, messageId: this.sendData.fetchLatestMessages[0].messageId, old: check })
+    }
+    else {
+      debugger
+      let arrayIndex = this.sendData.fetchLatestMessages.length
+      arrayIndex -= 1
+      console.log(this.sendData.fetchLatestMessages.length)
+      this.fetchMoreMessages$ = this.fetchMoreMessagesQL.fetch({ channelId: this.conversation.channel.value, messageId: this.sendData.fetchLatestMessages[arrayIndex].messageId, old: check })
+    }
+    this.fetchMoreMessages$ && this.fetchMoreMessages$.subscribe((res) => {
+      debugger
+      this.sendData = res.data
+      // console.log(this.sendData.fetchLatestMessages.channelId === this.conversation.channel.value)
+      console.log(res.data)
+    })
+  }
   emojiClicked(event: any) {
     this.message += event.emoji.native;
   }

@@ -1,18 +1,30 @@
 <div class="container">
   <button
-    *ngIf="sendData.fetchLatestMessages.length >= 9"
-    style="max-width: 90px; margin-top: 10px"
+    style="
+      max-width: 125px;
+      margin-top: 10px;
+      background-color: #41599a;
+      color: white;
+    "
+    (click)="fetchMoreMessages(true)"
   >
-    Click <i class="fa fa-arrow-up">
-
-    </i>
+    Read More
+    <i class="bi bi-arrow-up-circle" style="padding-left: 4px"></i>
   </button>
   <div class="body">
     <div
       class="message"
       [ngClass]="{ me: message.userId === conversation.user.value }"
-      *ngFor="let message of sendData.fetchLatestMessages"
+      *ngFor="
+        let message of (sendData &&
+          sendData.fetchLatestMessages &&
+          sendData.fetchLatestMessages) ||
+          (sendData && sendData.fetchMoreMessages && sendData.fetchMoreMessages)
+      "
     >
+      <!-- If you return channel id with fetch messages call then on front end
+         I've to use *ngIf="message.channelId === conversation.channel.value"
+ -->
       <div [ngClass]="{ me: message.userId === conversation.user.value }">
         <div
           class="messageContent"
@@ -28,10 +40,16 @@
     </div>
   </div>
   <button
-    *ngIf="sendData.fetchLatestMessages.length >= 9"
-    style="max-width: 90px; margin-bottom: 10px"
+    style="
+      max-width: 125px;
+      margin-bottom: 10px;
+      background-color: #41599a;
+      color: white;
+    "
+    (click)="fetchMoreMessages(false)"
   >
-    Click me
+    Read More
+    <i class="bi bi-arrow-down-circle" style="padding-left: 4px"></i>
   </button>
   <div class="footer">
     <div class="smileyIcon">

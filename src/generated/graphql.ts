@@ -175,6 +175,15 @@ export type FetchLatestMessagesQueryVariables = Exact<{
 
 export type FetchLatestMessagesQuery = { __typename?: 'Queries', fetchLatestMessages?: Array<{ __typename?: 'Message', messageId: string, text: string, datetime: any, userId: string }> | null };
 
+export type FetchMoreMessagesQueryVariables = Exact<{
+  channelId: Scalars['String'];
+  messageId: Scalars['String'];
+  old: Scalars['Boolean'];
+}>;
+
+
+export type FetchMoreMessagesQuery = { __typename?: 'Queries', fetchMoreMessages?: Array<{ __typename?: 'Message', messageId: string, text: string, datetime: any, userId: string }> | null };
+
 export type PostMessageMutationVariables = Exact<{
   text: Scalars['String'];
   userId: Scalars['String'];
@@ -200,6 +209,27 @@ export const FetchLatestMessagesDocument = gql`
   })
   export class FetchLatestMessagesGQL extends Apollo.Query<FetchLatestMessagesQuery, FetchLatestMessagesQueryVariables> {
     override document = FetchLatestMessagesDocument;
+    
+    constructor(apollo: Apollo.Apollo) {
+      super(apollo);
+    }
+  }
+export const FetchMoreMessagesDocument = gql`
+    query fetchMoreMessages($channelId: String!, $messageId: String!, $old: Boolean!) {
+  fetchMoreMessages(channelId: $channelId, messageId: $messageId, old: $old) {
+    messageId
+    text
+    datetime
+    userId
+  }
+}
+    `;
+
+  @Injectable({
+    providedIn: 'root'
+  })
+  export class FetchMoreMessagesGQL extends Apollo.Query<FetchMoreMessagesQuery, FetchMoreMessagesQueryVariables> {
+    override document = FetchMoreMessagesDocument;
     
     constructor(apollo: Apollo.Apollo) {
       super(apollo);
