@@ -7,59 +7,43 @@ import { Component, EventEmitter, OnInit, Output } from '@angular/core';
 })
 export class SidebarComponent implements OnInit {
   @Output() conversationClicked: EventEmitter<any> = new EventEmitter();
-
-  searchText: string = '';
   sendData = {
     channel: {
       label: '',
-      value: ''
+      value: '',
     },
     user: {
       label: '',
-      value: ''
+      value: '',
     },
-    messages: [
-      {
-        id: 0, body: '', time: '', me: false, channelId: 1,
-        userId: 2
-      }
-    ],
-  }
+  };
   userObjects = [
-    { value: "Joyse", label: 'Joyse' },
-    { value: "Sam", label: 'Sam' },
-    { value: "Russell", label: 'Russell' },
+    { value: 'Joyse', label: 'Joyse' },
+    { value: 'Sam', label: 'Sam' },
+    { value: 'Russell', label: 'Russell' },
   ];
   channelObjects = [
-    { value: "1", label: 'General Channel' },
-    { value: "2", label: 'Technology Channel' },
-    { value: "3", label: 'LGTM Channel' },
+    { value: '1', label: 'General Channel' },
+    { value: '2', label: 'Technology Channel' },
+    { value: '3', label: 'LGTM Channel' },
   ];
 
   constructor() {
-    this.sendData.messages =[
-      {
-        id: 0, body: '', time: '', me: false, channelId: 1,
-        userId: 2
-      }
-    ]
   }
 
   ngOnInit(): void { }
   sendChannel(channelValue: any) {
-    this.sendData.channel.label = channelValue.label
-    this.sendData.channel.value = channelValue.value
+    this.sendData.channel.label = channelValue.label;
+    this.sendData.channel.value = channelValue.value;
     if (channelValue.check !== true) {
-      this.conversationClicked.emit(this.sendData)
-    }
-    else {
-      alert("Please select User")
+      this.conversationClicked.emit(this.sendData);
+    } else {
+      alert('Please select User');
     }
   }
 
   onChangeObj(userValue: any) {
-    this.sendData.user.label = userValue.label
-    this.sendData.user.value = userValue.value
-    console.log(this.sendData)
+    this.sendData.user.label = userValue.label;
+    this.sendData.user.value = userValue.value;
   }
 }

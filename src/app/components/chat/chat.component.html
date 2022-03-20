@@ -7,37 +7,46 @@
       color: white;
     "
     (click)="fetchMoreMessages(true)"
+    *ngIf="arrayIndex === 10"
+    [disabled]='loading'
   >
     Read More
     <i class="bi bi-arrow-up-circle" style="padding-left: 4px"></i>
   </button>
   <div class="body">
-    <div
-      class="message"
-      [ngClass]="{ me: message.userId === conversation.user.value }"
-      *ngFor="
-        let message of (sendData &&
-          sendData.fetchLatestMessages &&
-          sendData.fetchLatestMessages) ||
-          (sendData && sendData.fetchMoreMessages && sendData.fetchMoreMessages)
-      "
-    >
-      <!-- If you return channel id with fetch messages call then on front end
+    <ng-container *ngIf="loading === false">
+      <div
+        class="message"
+        [ngClass]="{ me: message.userId === conversation.user.value }"
+        *ngFor="
+          let message of (sendData &&
+            sendData.fetchLatestMessages &&
+            sendData.fetchLatestMessages) ||
+            (sendData &&
+              sendData.fetchMoreMessages &&
+              sendData.fetchMoreMessages) ||
+            (sendDefaultData && sendData.fetchLatestMessages)
+        "
+      >
+        <!-- If you return channel id with fetch messages call then on front end
          I've to use *ngIf="message.channelId === conversation.channel.value"
  -->
-      <div [ngClass]="{ me: message.userId === conversation.user.value }">
-        <div
-          class="messageContent"
-          style="word-wrap: break-word; max-width: 548px"
-        >
-          {{ message.text }}
-          <div>
-            {{ message.datetime | date: "hh:mm" }}
+        <div [ngClass]="{ me: message.userId === conversation.user.value }">
+          <div
+            class="messageContent"
+            style="word-wrap: break-word; max-width: 548px"
+          >
+            {{ message.text }}
+            <div>
+              {{ message.datetime | date: "hh:mm" }}
+            </div>
+          </div>
+          <div style="direction: rtl">
+            {{ message.userId }}
           </div>
         </div>
-        {{ message.userId }}
       </div>
-    </div>
+    </ng-container>
   </div>
   <button
     style="
@@ -47,6 +56,8 @@
       color: white;
     "
     (click)="fetchMoreMessages(false)"
+    *ngIf="arrayIndex === 10"
+    [disabled]='loading'
   >
     Read More
     <i class="bi bi-arrow-down-circle" style="padding-left: 4px"></i>
