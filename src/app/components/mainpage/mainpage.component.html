@@ -1,0 +1,56 @@
+<div class="background-header"></div>
+<div class="container">
+  <div class="chatContainer">
+    <div class="col-md-4" style="overflow: auto">
+      <app-sidebar
+        (conversationClicked)="onConversationSelected($event)"
+      ></app-sidebar>
+    </div>
+    <div
+      [ngClass]="
+        conversation !== undefined
+          ? 'col-md-8 myClass'
+          : ' myChatClass col-md-8'
+      "
+    >
+      <div class="chat">
+        <div class="chatPlaceholder" *ngIf="!conversation">
+          <h2>Keep your Internet connected</h2>
+          <img width="400" src="../assets/images/chatIcon.jpeg" />
+          <p>
+            Real time Chat connects you to sync messages. To reduce data<br />
+            usage, connect to your phone to Wi-Fi.
+          </p>
+          <div class="seperator"></div>
+
+          <p>
+            Real time Chat code available.<a
+              href="https://github.com/MuaazFarooqKhan"
+              style="color: #41599a; text-decoration: none"
+              >Get it here</a
+            >
+          </p>
+        </div>
+        <div *ngIf="conversation" style="display: contents;">
+          <div class="header">
+            <div class="avatarSection">
+              <div class="picture">
+                <img src="../../assets/images/logo.png" style="margin-top: 13px; float: left;"/>
+              </div>
+              <div class="nameSection"> 
+                {{ conversation.channel.label }}
+              </div>
+            </div>
+            <div class="actionButtons">
+              <img src="../../assets/images/attached.svg" />
+              <img src="../../assets/images/moreVertIcon.svg" />
+            </div>
+          </div>
+          <app-chat
+            [conversation]="conversation"
+          ></app-chat>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

@@ -13,12 +13,16 @@ import { HttpLink } from 'apollo-angular/http';
 import { InMemoryCache } from '@apollo/client/core';
 import { HttpClientModule } from '@angular/common/http';
 import { ToastrModule } from "ngx-toastr";
+import { MainpageComponent } from './components/mainpage/mainpage.component';
+import { PagenotfoundComponent } from './components/pagenotfound/pagenotfound.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     SidebarComponent,
-    ChatComponent
+    ChatComponent,
+    MainpageComponent,
+    PagenotfoundComponent
   ],
   imports: [
     BrowserModule,
