@@ -8,10 +8,13 @@ html, body { height: 100%; }
 body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
 
 .toast-close-button {
-     color: black !important;
+     color: white !important;
 }
 .toast-error {
     background-image: none !important;
+}
+.toast-message {
+    color: white !important;
 }
 .toast-container {
     max-width: 400px !important;

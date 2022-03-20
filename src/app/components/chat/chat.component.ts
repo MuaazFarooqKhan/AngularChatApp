@@ -23,7 +23,7 @@ export class ChatComponent implements OnInit {
   postMessages$?: Observable<FetchResult<PostMessageMutation>>;
   @Output() onSubmit: EventEmitter<any> = new EventEmitter();
   emojiPickerVisible: any;
-  loading: boolean = true
+  loading: boolean = true;
   arrayIndex: number = 0;
   sendData: any = {
     fetchLatestMessages: [],
@@ -36,25 +36,28 @@ export class ChatComponent implements OnInit {
     private fetchMessagesQL: FetchLatestMessagesGQL,
     private postMessagesQL: PostMessageGQL,
     private fetchMoreMessagesQL: FetchMoreMessagesGQL,
-    private _toast : SharemessageService
-  ) { }
+    private _toast: SharemessageService
+  ) {}
 
   ngOnInit(): void {
     this.fetchMessages$ = this.fetchMessagesQL.fetch({
       channelId: this.conversation.channel.value,
     });
-      this.fetchMessages$.subscribe((res: any) => {
-          this.sendData = JSON.parse(JSON.stringify(res.data));
-          this.sendDefaultData = JSON.parse(JSON.stringify(res.data));
-          this.loading = false
-          this.arrayIndex = this.sendData.fetchMoreMessages
-            ? this.sendData.fetchMoreMessages.length
-            : this.sendData.fetchLatestMessages.length;
+    this.fetchMessages$.subscribe(
+      (res: any) => {
+        this.sendData = JSON.parse(JSON.stringify(res.data));
+        this.sendDefaultData = JSON.parse(JSON.stringify(res.data));
+        this.loading = false;
+        this.arrayIndex = this.sendData.fetchMoreMessages
+          ? this.sendData.fetchMoreMessages.length
+          : this.sendData.fetchLatestMessages.length;
+      },
+      (err) => {
+        if (err.graphQLErrors[0]?.extensions.code === 400) {
+          this._toast.showNotificationUpdate('Channel not found');
         }
-        // ,(err) => {
-        //   this.showNotificationUpdate('Channel not found', 'Channel id missing');
-        // }
-      );
+      }
+    );
   }
 
   submitMessage(event: any) {
@@ -63,13 +66,14 @@ export class ChatComponent implements OnInit {
     this.postMessages$ = this.postMessagesQL.mutate({
       text: value,
       userId: this.conversation.user.value,
-      channelId: '1',
+      channelId: this.conversation.channel.value,
     });
-      this.postMessages$.subscribe((res: any) => {
-        debugger
+    this.postMessages$.subscribe(
+      (res: any) => {
+        debugger;
         this.arrayIndex = this.sendData.fetchMoreMessages
-        ? this.sendData.fetchMoreMessages.length
-        : this.sendData.fetchLatestMessages.length;
+          ? this.sendData.fetchMoreMessages.length
+          : this.sendData.fetchLatestMessages.length;
         if (this.sendData.fetchLatestMessages !== undefined) {
           this.sendData.fetchLatestMessages.unshift({
             ...res.data.postMessage,
@@ -80,13 +84,31 @@ export class ChatComponent implements OnInit {
           });
         }
         this.message = '';
+      },
+      (err) => {
+        debugger;
+        console.log(err.message);
+        if (err.graphQLErrors[0]?.extensions.code === 400) {
+          let showMsg = this._toast.titleCaseWord(
+            err.graphQLErrors[0]?.message
+          );
+          debugger;
+          if (showMsg) {
+            this._toast.showNotificationUpdate(showMsg);
+          }
+        }
+        if (err.graphQLErrors[0]?.extensions.code === 500) {
+          this._toast.showNotificationUpdate(
+            "Couldn't save message, please retry."
+          );
+        }
       }
-      );
+    );
     return this.sendData;
   }
 
   fetchMoreMessages(check: boolean) {
-    this.loading = true
+    this.loading = true;
     if (check === true) {
       this.fetchMoreMessages$ = this.fetchMoreMessagesQL.fetch({
         channelId: this.conversation.channel.value,
@@ -111,17 +133,45 @@ export class ChatComponent implements OnInit {
       });
     }
     this.fetchMoreMessages$ &&
-      this.fetchMoreMessages$.subscribe((res) => {
-        this.sendData = JSON.parse(JSON.stringify(res.data));
-        this.loading= false
-        if (
-          this.sendData.fetchMoreMessages && this.sendData.fetchMoreMessages.length === 0 ||
-          this.sendData.fetchLatestMessages && this.sendData.fetchLatestMessages.length === 0
-        ) {
-          this._toast.showNotificationUpdate("No More Message found. Redirecting to previous messages")
-          this.sendData = this.sendDefaultData;
+      this.fetchMoreMessages$.subscribe(
+        (res) => {
+          this.sendData = JSON.parse(JSON.stringify(res.data));
+          this.loading = false;
+          if (
+            (this.sendData.fetchMoreMessages &&
+              this.sendData.fetchMoreMessages.length === 0) ||
+            (this.sendData.fetchLatestMessages &&
+              this.sendData.fetchLatestMessages.length === 0)
+          ) {
+            this._toast.showNotificationUpdate(
+              'No More Message found. Redirecting to previous messages'
+            );
+            this.sendData = this.sendDefaultData;
+          }
+        },
+        (err) => {
+          debugger;
+          console.log(err.message);
+          if (err.graphQLErrors[0]?.extensions.code === 400) {
+            let showMsg = this._toast.titleCaseWord(
+              err.graphQLErrors[0]?.message
+            );
+            debugger;
+            if (showMsg) {
+              this._toast.showNotificationUpdate(showMsg);
+            }
+          }
+          if (err.graphQLErrors[0]?.extensions.code === 500) {
+            let showMsg = this._toast.titleCaseWord(
+              err.graphQLErrors[0]?.message
+            );
+            debugger;
+            if (showMsg) {
+              this._toast.showNotificationUpdate(showMsg);
+            }
+          }
         }
-      });
+      );
   }
   emojiClicked(event: any) {
     this.message += event.emoji.native;
