@@ -1,6 +1,7 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { FetchResult } from '@apollo/client/core';
 import { Observable } from 'rxjs';
+import { SharemessageService } from 'src/app/services/sharemessage.service';
 import {
   FetchLatestMessagesGQL,
   FetchLatestMessagesQuery,
@@ -9,7 +10,6 @@ import {
   PostMessageGQL,
   PostMessageMutation,
 } from 'src/generated/graphql';
-import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-chat',
@@ -36,7 +36,7 @@ export class ChatComponent implements OnInit {
     private fetchMessagesQL: FetchLatestMessagesGQL,
     private postMessagesQL: PostMessageGQL,
     private fetchMoreMessagesQL: FetchMoreMessagesGQL,
-    private toastr: ToastrService
+    private _toast : SharemessageService
   ) { }
 
   ngOnInit(): void {
@@ -55,15 +55,6 @@ export class ChatComponent implements OnInit {
         //   this.showNotificationUpdate('Channel not found', 'Channel id missing');
         // }
       );
-  }
-  showNotificationUpdate(msg: string, news: string) {
-    this.toastr.error(msg, news, {
-      timeOut: 5000,
-      closeButton: true,
-      enableHtml: true,
-      toastClass: 'alert alert-error alert-with-icon',
-      positionClass: 'toast-center-center',
-    });
   }
 
   submitMessage(event: any) {
@@ -127,7 +118,7 @@ export class ChatComponent implements OnInit {
           this.sendData.fetchMoreMessages && this.sendData.fetchMoreMessages.length === 0 ||
           this.sendData.fetchLatestMessages && this.sendData.fetchLatestMessages.length === 0
         ) {
-          this.showNotificationUpdate("No More Message found", 'Return to Previous Messages')
+          this._toast.showNotificationUpdate("No More Message found. Redirecting to previous messages")
           this.sendData = this.sendDefaultData;
         }
       });

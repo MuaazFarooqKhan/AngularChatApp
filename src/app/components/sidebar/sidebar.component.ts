@@ -1,4 +1,5 @@
 import { Component, EventEmitter, OnInit, Output } from '@angular/core';
+import { SharemessageService } from 'src/app/services/sharemessage.service';
 
 @Component({
   selector: 'app-sidebar',
@@ -28,7 +29,9 @@ export class SidebarComponent implements OnInit {
     { value: '3', label: 'LGTM Channel' },
   ];
 
-  constructor() {
+  constructor(
+    private _toast : SharemessageService
+  ) {
   }
 
   ngOnInit(): void { }
@@ -38,7 +41,7 @@ export class SidebarComponent implements OnInit {
     if (channelValue.check !== true) {
       this.conversationClicked.emit(this.sendData);
     } else {
-      alert('Please select User');
+      this._toast.showNotificationUpdate("Please select user first")
     }
   }
 

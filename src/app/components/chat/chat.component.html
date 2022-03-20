@@ -7,7 +7,7 @@
       color: white;
     "
     (click)="fetchMoreMessages(true)"
-    *ngIf="arrayIndex === 10"
+    *ngIf="arrayIndex > 9"
     [disabled]='loading'
   >
     Read More
@@ -56,7 +56,7 @@
       color: white;
     "
     (click)="fetchMoreMessages(false)"
-    *ngIf="arrayIndex === 10"
+    *ngIf="arrayIndex > 1"
     [disabled]='loading'
   >
     Read More
