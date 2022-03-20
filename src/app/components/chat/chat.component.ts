@@ -37,7 +37,7 @@ export class ChatComponent implements OnInit {
     private postMessagesQL: PostMessageGQL,
     private fetchMoreMessagesQL: FetchMoreMessagesGQL,
     private _toast: SharemessageService
-  ) {}
+  ) { }
 
   ngOnInit(): void {
     this.fetchMessages$ = this.fetchMessagesQL.fetch({
@@ -70,7 +70,6 @@ export class ChatComponent implements OnInit {
     });
     this.postMessages$.subscribe(
       (res: any) => {
-        debugger;
         this.arrayIndex = this.sendData.fetchMoreMessages
           ? this.sendData.fetchMoreMessages.length
           : this.sendData.fetchLatestMessages.length;
@@ -86,13 +85,10 @@ export class ChatComponent implements OnInit {
         this.message = '';
       },
       (err) => {
-        debugger;
-        console.log(err.message);
         if (err.graphQLErrors[0]?.extensions.code === 400) {
           let showMsg = this._toast.titleCaseWord(
             err.graphQLErrors[0]?.message
           );
-          debugger;
           if (showMsg) {
             this._toast.showNotificationUpdate(showMsg);
           }
@@ -150,13 +146,10 @@ export class ChatComponent implements OnInit {
           }
         },
         (err) => {
-          debugger;
-          console.log(err.message);
           if (err.graphQLErrors[0]?.extensions.code === 400) {
             let showMsg = this._toast.titleCaseWord(
               err.graphQLErrors[0]?.message
             );
-            debugger;
             if (showMsg) {
               this._toast.showNotificationUpdate(showMsg);
             }
@@ -165,7 +158,6 @@ export class ChatComponent implements OnInit {
             let showMsg = this._toast.titleCaseWord(
               err.graphQLErrors[0]?.message
             );
-            debugger;
             if (showMsg) {
               this._toast.showNotificationUpdate(showMsg);
             }
